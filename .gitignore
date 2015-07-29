@@ -1,0 +1,75 @@
+*.py[co]
+*.exe
+*.msi
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+sdist
+develop-eggs
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+/htmlcov
+.tox
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+
+# Komodo
+*.komodoproject
+
+# PyCharm
+.idea/
+
+# App logs
+hex/
+log/
+logs/
+
+# Emacs temp files
+*#
+.#*
+*~
+
+# Merge/version control files
+*.orig
+*.diff
+*.patch
+
+# Mac OS
+.DS_Store
+
+# Editor temp files:
+*.swp
+*~
+
+# Sphinx docs:
+docs/_build
+
+# Ignore the .pipCache directory.
+.pipCache
+
+# Ignore the .aptCache directory.
+.aptCache
+
+# environment variables files used by honcho/foreman
+.env
+
+# tags files
+TAGS
+
+# Virtual Environment
+venv/
