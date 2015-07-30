@@ -1,7 +1,7 @@
 from stronglib.core import Stronglib, StronglibException
 
 
-class DnsBlackholeUpdaterException(Exception):
+class DnsBlackholeUpdaterException(StronglibException):
     """
     An error occurred in the DNS blackhole updater.
 
@@ -27,6 +27,8 @@ class DnsBlackholeUpdater(object):
         """
         Given a collection of domain names, make sure the DNS server blackholes
         those and only those domains.
+
+        Return a list of domains that failed to update.
 
         """
         raise NotImplementedError
@@ -54,15 +56,34 @@ class DnsBlackholeIncrementalUpdater(DnsBlackholeUpdater):
     Implements `update_domains` by taking the difference between current and
     expected domains set and adding and deleting correspondingly.
 
+    Each DNS server integration should subclass and implement `add_domains`,
+    `delete_domains`, and `list_domains`.
+
     """
 
     def add_domains(self, domains):
+        """
+        Add the given collection of domains to the blackhole.
+
+        Return a list of domains names that failed to be added.
+
+        """
         raise NotImplementedError
 
-    def delete_domains(self, domains):
+    def remove_domains(self, domains):
+        """
+        Remove the given collection of domains from the blackhole.
+
+        Return a list of domains names that failed to be removed.
+
+        """
         raise NotImplementedError
 
     def list_domains(self):
+        """
+        Return a list of domains that are currently blackholed.
+
+        """
         raise NotImplementedError
 
     def update_domains(self, domains):
@@ -70,4 +91,4 @@ class DnsBlackholeIncrementalUpdater(DnsBlackholeUpdater):
         updated = set(domains)
 
         return (self.add_domains(updated.difference(current)) +
-                self.delete_domains(current.difference(updated)))
+                self.remove_domains(current.difference(updated)))

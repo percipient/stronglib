@@ -16,11 +16,22 @@ class StronglibUnauthorized(StronglibException):
 
 
 class Stronglib(object):
+    """
+    The main class that one instantiates to access STRONGARM API.
+
+    You must provide to the constructor an API token given by the dashboard.
+    Optionally provide the host url for on-premise instances of STRONGARM.
+
+    """
 
     DEFAULT_HOST = 'https://strongarm.percipientnetworks.com'
 
     def __init__(self, token, host=None):
+
+        # API key given by the dashboard.
         self.token = token
+
+        # Use the default STRONGARM url if the host is not provided.
         self.host = host if host else self.DEFAULT_HOST
 
     def _request(self, endpoint, headers=None, params=None):

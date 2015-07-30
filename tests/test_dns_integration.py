@@ -34,7 +34,7 @@ class StronglibDnsTestCase(unittest.TestCase):
                 self.blackholed_domains.extend(domains)
                 return []
 
-            def delete_domains(self, domains):
+            def remove_domains(self, domains):
                 for domain in domains:
                     self.blackholed_domains.remove(domain)
                 return []
