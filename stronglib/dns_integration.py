@@ -29,7 +29,7 @@ class DnsBlackholeUpdater(object):
         those and only those domains.
 
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def run(self, token):
         """
@@ -57,13 +57,13 @@ class DnsBlackholeIncrementalUpdater(DnsBlackholeUpdater):
     """
 
     def add_domains(self, domains):
-        raise NotImplemented
+        raise NotImplementedError
 
     def delete_domains(self, domains):
-        raise NotImplemented
+        raise NotImplementedError
 
     def list_domains(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def update_domains(self, domains):
         current = set(self.list_domains())
