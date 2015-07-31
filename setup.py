@@ -66,7 +66,7 @@ setup(
     url='http://strongarm.io/',
     download_url='https://github.com/percipient/stronglib',
     author=stronglib.__author__,
-    author_email='stephendicato@gmail.com',
+    author_email='support@percipientnetworks.com',
     license=stronglib.__licence__,
     packages=find_packages(),
     extras_require=extras_require,
