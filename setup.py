@@ -34,25 +34,6 @@ install_requires = [
     'requests>=2.7.0',
 ]
 
-### Conditional dependencies:
-
-# sdist
-if not 'bdist_wheel' in sys.argv:
-    try:
-        #noinspection PyUnresolvedReferences
-        import argparse
-    except ImportError:
-        install_requires.append('argparse>=1.2.1')
-
-
-# bdist_wheel
-extras_require = {
-    # http://wheel.readthedocs.org/en/latest/#defining-conditional-dependencies
-    ':python_version == "2.6"'
-    ' or python_version == "3.0"'
-    ' or python_version == "3.1" ': ['argparse>=1.2.1'],
-}
-
 
 def long_description():
     with codecs.open('README.rst', encoding='utf8') as f:
@@ -69,7 +50,6 @@ setup(
     author_email='support@percipientnetworks.com',
     license=stronglib.__licence__,
     packages=find_packages(),
-    extras_require=extras_require,
     install_requires=install_requires,
     tests_require=tests_require,
     cmdclass={'test': PyTest},
