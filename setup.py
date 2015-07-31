@@ -1,10 +1,9 @@
+import re
 import sys
 import codecs
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
-
-import stronglib
 
 
 class PyTest(TestCommand):
@@ -35,20 +34,27 @@ install_requires = [
 ]
 
 
+def version():
+    # Get version without importing the module.
+    with open('stronglib/__init__.py', 'r') as fd:
+        return re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                         fd.read(), re.MULTILINE).group(1)
+
+
 def long_description():
     with codecs.open('README.rst', encoding='utf8') as f:
         return f.read()
 
 setup(
     name='stronglib',
-    version=stronglib.__version__,
-    description=stronglib.__doc__.strip(),
+    version=version(),
+    description='A Python library for STRONGARM API',
     long_description=long_description(),
     url='http://strongarm.io/',
     download_url='https://github.com/percipient/stronglib',
-    author=stronglib.__author__,
+    author='Percipient Networks, LLC',
     author_email='support@percipientnetworks.com',
-    license=stronglib.__licence__,
+    license='Apache 2.0',
     packages=find_packages(),
     install_requires=install_requires,
     tests_require=tests_require,
