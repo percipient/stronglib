@@ -13,6 +13,7 @@ class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = [
+            '--cov', './stronglib', '--cov', './tests',
             '--doctest-modules', '--verbose',
             './stronglib', './tests'
         ]
@@ -24,7 +25,6 @@ class PyTest(TestCommand):
 
 
 tests_require = [
-    'py==1.4.30',
     'pytest==2.7.2',
     'pytest-cov==1.8.1',
 ]

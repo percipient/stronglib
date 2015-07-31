@@ -8,7 +8,6 @@ all: test
 uninstall-stronglib:
 	@echo $(TAG)Removing existing installation of stronglib$(END)
 	- pip uninstall --yes stronglib >/dev/null
-	! which stronglib
 	@echo
 
 uninstall-all: uninstall-stronglib
@@ -23,12 +22,7 @@ init: uninstall-stronglib
 
 test: init
 	@echo $(TAG)Running tests in on current Python with coverage $(END)
-	py.test --cov ./stronglib --cov ./tests --doctest-modules --verbose ./stronglib ./tests
-	@echo
-
-test-tox: init
-	@echo $(TAG)Running tests on all Pythons via Tox$(END)
-	tox
+	python setup.py test
 	@echo
 
 test-dist: test-sdist test-bdist-wheel
@@ -38,14 +32,12 @@ test-sdist: clean uninstall-stronglib
 	@echo $(TAG)Testing sdist build an installation$(END)
 	python setup.py sdist
 	pip install --force-reinstall --upgrade dist/*.gz
-	which strongarm
 	@echo
 
 test-bdist-wheel: clean uninstall-stronglib
 	@echo $(TAG)Testing wheel build an installation$(END)
 	python setup.py bdist_wheel
 	pip install --force-reinstall --upgrade dist/*.whl
-	which strongarm
 	@echo
 
 # This tests everything, even this Makefile.
