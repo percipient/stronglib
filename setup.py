@@ -87,9 +87,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries',
         'Topic :: System :: Networking',
-        'Topic :: Terminals',
-        'Topic :: Utilities'
     ],
 )
