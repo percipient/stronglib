@@ -9,4 +9,9 @@ __version__ = 'dev'
 __licence__ = 'Apache 2.0'
 
 
-from core import Stronglib
+host = 'https://strongarm.percipientnetworks.com'
+api_key = None
+
+
+from stronglib.common import (StronglibException, StronglibUnauthorized)
+from stronglib.resources import Domain

@@ -2,7 +2,7 @@
 
 import unittest
 
-from stronglib.core import Stronglib, StronglibUnauthorized
+import stronglib
 
 
 class StronglibTestCase(unittest.TestCase):
@@ -14,6 +14,6 @@ class StronglibTestCase(unittest.TestCase):
 
         """
 
-        with self.assertRaises(StronglibUnauthorized):
-            strong = Stronglib('bad_token')
-            strong.get_domains()
+        with self.assertRaises(stronglib.StronglibUnauthorized):
+            stronglib.api_key = 'bad_token'
+            stronglib.Domain.list()

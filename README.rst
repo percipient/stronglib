@@ -27,13 +27,14 @@ Currently the STRONGARM API supports listing all domains.
 
 .. code-block:: python
 
+    import stronglib
+
     # token authentication
-    >>> from stronglib import Stronglib
-    >>> strong = Stronglib(your_api_token)
+    stronglib.api_key = 'your_api_token'
 
     # list all blackholed domains
-    >>> strong.get_domains()
-    [u'example.com', u'example.org']
+    for domain in stronglib.Domain.list()
+        do_something_with(domain['name'])
 
 
 documentation
