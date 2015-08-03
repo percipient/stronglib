@@ -34,7 +34,7 @@ Currently the STRONGARM API supports listing all domains.
 
     # list all blackholed domains
     for domain in stronglib.Domain.list()
-        do_something_with(domain['name'])
+        print(domain.name)
 
 
 documentation

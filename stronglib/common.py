@@ -120,7 +120,26 @@ class PaginatedResourceList(object):
         raise TypeError("list indices must be integers, not %s" % type(index))
 
 
-class StrongResource(dict):
+class Struct(object):
+    """
+    A generic object that holds attributes, useful for providing dot notation
+    to dictionaries.
+
+    """
+
+    def __init__(self, dictionary):
+
+        self.__dict__.update(dictionary)
+
+        for k, v in self.__dict__.iteritems():
+            if isinstance(v, dict):
+                self.__dict__[k] = Struct(v)
+
+    def __repr__(self):
+        return "%s(%s)" % (self.__class__.__name__, self.__dict__)
+
+
+class StrongResource(Struct):
     """
     The abstract base class for a piece of STRONGARM resource.
 
