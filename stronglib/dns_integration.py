@@ -1,7 +1,7 @@
-from stronglib.core import Stronglib, StronglibException
+import stronglib
 
 
-class DnsBlackholeUpdaterException(StronglibException):
+class DnsBlackholeUpdaterException(stronglib.StronglibException):
     """
     An error occurred in the DNS blackhole updater.
 
@@ -40,7 +40,9 @@ class DnsBlackholeUpdater(object):
 
         """
 
-        domains = Stronglib(token).get_domains()
+        stronglib.api_key = token
+
+        domains = [domain.name for domain in stronglib.Domain.list()]
 
         failed = self.update_domains(domains)
 
