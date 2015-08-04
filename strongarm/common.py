@@ -1,4 +1,5 @@
 import requests
+from six import integer_types
 from six.moves import xrange
 
 import strongarm
@@ -107,7 +108,7 @@ class PaginatedResourceList(object):
 
     def __getitem__(self, index):
 
-        if isinstance(index, (int, long)):
+        if isinstance(index, integer_types):
             if index < 0:
                 index += self.__len
 
