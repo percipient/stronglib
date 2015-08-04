@@ -3,9 +3,9 @@
 from math import ceil
 import json
 import unittest
-from urlparse import parse_qs, urlparse
 
 import responses
+from six.moves.urllib.parse import parse_qs, urlparse
 
 import strongarm
 from strongarm.common import PaginatedResourceList
