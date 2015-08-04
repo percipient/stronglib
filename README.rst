@@ -2,8 +2,8 @@ stronglib
 =========
 
 stronglib is an Apache2 licensed Python library for the
-[STRONGARM](http://strongarm.io)
-[API](https://strongarm.percipientnetworks.com/api/).
+`STRONGARM <http://strongarm.io>`_
+`API <https://strongarm.percipientnetworks.com/api/>`_.
 
 features
 --------
