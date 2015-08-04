@@ -37,12 +37,6 @@ Currently the STRONGARM API supports listing all domains.
     for domain in strongarm.Domain.all():
         print(domain.name)
 
-
-documentation
--------------
-
-Documentation is available at ...
-
 contribute
 ----------
 
