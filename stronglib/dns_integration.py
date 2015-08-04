@@ -42,7 +42,7 @@ class DnsBlackholeUpdater(object):
 
         stronglib.api_key = token
 
-        domains = [domain.name for domain in stronglib.Domain.list()]
+        domains = [domain.name for domain in stronglib.Domain.all()]
 
         failed = self.update_domains(domains)
 

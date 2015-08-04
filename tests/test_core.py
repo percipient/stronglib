@@ -16,4 +16,4 @@ class StronglibTestCase(unittest.TestCase):
 
         with self.assertRaises(stronglib.StronglibUnauthorized):
             stronglib.api_key = 'bad_token'
-            stronglib.Domain.list()
+            stronglib.Domain.all()

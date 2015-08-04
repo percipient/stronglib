@@ -142,8 +142,8 @@ class StrongResource(Struct):
     """
     The abstract base class for a piece of STRONGARM resource.
 
-    Support the `retrieve` method that takes an id and gets a single instance
-    of the resource from the API.
+    Support the `get` method that takes an id and gets a single instance of the
+    resource from the API.
 
     Implementations should define a class variable `endpoint` to specifie the
     API path.
@@ -151,7 +151,7 @@ class StrongResource(Struct):
     """
 
     @classmethod
-    def retrieve(cls, id):
+    def get(cls, id):
         endpoint = stronglib.host + cls.endpoint + str(id)
         return cls(request('get', endpoint))
 
@@ -160,12 +160,12 @@ class ListableResource(object):
     """
     A mixin for a STRONGARM resource that can be listed.
 
-    The `list` method returns an instance of PaginatedList that lazily contains
-    all instances of the requested resource.
+    The `all` method returns an instance of PaginatedResourceList that lazily
+    contains all instances of the requested resource.
 
     """
 
     @classmethod
-    def list(cls):
+    def all(cls):
         endpoint = stronglib.host + cls.endpoint
         return PaginatedResourceList(cls, endpoint)
