@@ -49,7 +49,7 @@ contribute
 #. Check for open issues or open a fresh issue to start a discussion
    around a feature idea or a bug.
 #. If you feel uncomfortable or uncertain about an issue or your changes,
-   feel free to email @dicato and he will happily help you.
+   feel free to email support@percipientnetworks.com and we will happily help you.
 #. Fork `the repository`_ on GitHub to start making your changes to the
    **master** branch (or branch off of it).
 #. Write a test which shows that the bug was fixed or that the feature
