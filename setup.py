@@ -26,6 +26,7 @@ class PyTest(TestCommand):
 tests_require = [
     'pytest==2.7.2',
     'pytest-cov==1.8.1',
+    'responses==0.4.0',
 ]
 
 
