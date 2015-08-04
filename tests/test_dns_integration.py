@@ -2,12 +2,12 @@
 
 import unittest
 
-from stronglib.dns_integration import (DnsBlackholeIncrementalUpdater,
+from strongarm.dns_integration import (DnsBlackholeIncrementalUpdater,
                                        DnsBlackholeUpdater,
                                        DnsBlackholeUpdaterException)
 
 
-class StronglibDnsTestCase(unittest.TestCase):
+class StrongarmDnsTestCase(unittest.TestCase):
 
     def test_unimplemented(self):
         """Test that running the base class directly raises NotImplemented."""

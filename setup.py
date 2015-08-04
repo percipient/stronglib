@@ -12,9 +12,9 @@ class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = [
-            '--cov', './stronglib', '--cov', './tests',
+            '--cov', './strongarm', '--cov', './tests',
             '--doctest-modules', '--verbose',
-            './stronglib', './tests'
+            './strongarm', './tests'
         ]
         self.test_suite = True
 
@@ -37,7 +37,7 @@ install_requires = [
 
 def version():
     # Get version without importing the module.
-    with open('stronglib/__init__.py', 'r') as fd:
+    with open('strongarm/__init__.py', 'r') as fd:
         return re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                          fd.read(), re.MULTILINE).group(1)
 

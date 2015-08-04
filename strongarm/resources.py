@@ -1,4 +1,4 @@
-from stronglib.common import StrongResource, ListableResource
+from strongarm.common import StrongResource, ListableResource
 
 
 class Domain(StrongResource, ListableResource):

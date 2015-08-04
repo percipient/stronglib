@@ -1,16 +1,16 @@
 import requests
 
-import stronglib
+import strongarm
 
 
-class StronglibException(Exception):
+class StrongarmException(Exception):
     """
     An error occured in stronglib.
 
     """
 
 
-class StronglibUnauthorized(StronglibException):
+class StrongarmUnauthorized(StrongarmException):
     """
     Missing or incorrect authentication credentials.
 
@@ -28,20 +28,20 @@ def request(method, endpoint, **kwargs):
     # Add authorization token to the request headers.
     if 'headers' not in kwargs:
         kwargs['headers'] = {}
-    kwargs['headers']['Authorization'] = 'Token %s' % stronglib.api_key
+    kwargs['headers']['Authorization'] = 'Token %s' % strongarm.api_key
 
     res = requests.request(method, endpoint, **kwargs)
 
-    # Raise Stronglib exceptions on the error code.
+    # Raise StrongarmException on the error code.
     if res.status_code == 401:
         try:
             msg = res.json()['details']
         except KeyError:
             msg = ''
-        raise StronglibUnauthorized(msg)
+        raise StrongarmUnauthorized(msg)
 
     elif res.status_code != requests.codes.ok:
-        raise StronglibException("Received error code %d" % res.status_code)
+        raise StrongarmException("Received error code %d" % res.status_code)
 
     return res.json()
 
@@ -160,7 +160,7 @@ class StrongResource(Struct):
 
     @classmethod
     def get(cls, id):
-        endpoint = stronglib.host + cls.endpoint + str(id)
+        endpoint = strongarm.host + cls.endpoint + str(id)
         return cls(request('get', endpoint))
 
 
@@ -175,5 +175,5 @@ class ListableResource(object):
 
     @classmethod
     def all(cls):
-        endpoint = stronglib.host + cls.endpoint
+        endpoint = strongarm.host + cls.endpoint
         return PaginatedResourceList(cls, endpoint)

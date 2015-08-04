@@ -1,4 +1,4 @@
-"""Tests for stronglib.common."""
+"""Tests for strongarm.common."""
 
 from math import ceil
 import json
@@ -7,11 +7,11 @@ from urlparse import parse_qs, urlparse
 
 import responses
 
-import stronglib
-from stronglib.common import PaginatedResourceList
+import strongarm
+from strongarm.common import PaginatedResourceList
 
 
-class StronglibTestCase(unittest.TestCase):
+class StrongarmTestCase(unittest.TestCase):
 
     def test_unauthorized(self):
         """
@@ -20,9 +20,9 @@ class StronglibTestCase(unittest.TestCase):
 
         """
 
-        with self.assertRaises(stronglib.StronglibUnauthorized):
-            stronglib.api_key = 'bad_token'
-            stronglib.Domain.all()
+        with self.assertRaises(strongarm.StrongarmUnauthorized):
+            strongarm.api_key = 'bad_token'
+            strongarm.Domain.all()
 
 
 class PaginationTestCase(unittest.TestCase):
