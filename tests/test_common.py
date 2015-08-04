@@ -45,8 +45,9 @@ class PaginationTestCase(unittest.TestCase):
             params = parse_qs(urlparse(request.url).query)
             page = int(params['page'][0]) if 'page' in params else 1
 
-            data = range(self.per_page * (page - 1),
-                         min(self.per_page * page, self.total))
+            start = self.per_page * (page - 1)
+            end = min(self.per_page * page, self.total)
+            data = list(range(start, end))
 
             next_url = None
             if page < self.pages:
@@ -112,13 +113,13 @@ class PaginationTestCase(unittest.TestCase):
         """
         self.plist = PaginatedResourceList(int, self.endpoint)
 
-        self.assertEqual(self.plist[1:3], range(1, 3))
+        self.assertEqual(self.plist[1:3], list(range(1, 3)))
         self.assertEqual(len(responses.calls), 1)
 
-        self.assertEqual(self.plist[1:7:2], range(1, 7, 2))
+        self.assertEqual(self.plist[1:7:2], list(range(1, 7, 2)))
         self.assertEqual(len(responses.calls), 2)
 
-        self.assertEqual(self.plist[10:13], range(10, 13))
+        self.assertEqual(self.plist[10:13], list(range(10, 13)))
         self.assertEqual(len(responses.calls), 4)
 
     @responses.activate
@@ -131,5 +132,5 @@ class PaginationTestCase(unittest.TestCase):
         self.plist = PaginatedResourceList(int, self.endpoint)
 
         entire_list = list(self.plist)
-        self.assertEqual(entire_list, range(self.total))
+        self.assertEqual(entire_list, list(range(self.total)))
         self.assertEqual(len(responses.calls), 4)

@@ -1,4 +1,5 @@
 import requests
+from six.moves import xrange
 
 import strongarm
 
