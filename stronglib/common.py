@@ -69,7 +69,7 @@ class PaginatedResourceList(object):
         self.__expand()
 
     def __can_expand(self):
-        return len(self._data) < self.__len
+        return len(self.__data) < self.__len
 
     def __expand(self):
         data = request('get', self.__next_url)
