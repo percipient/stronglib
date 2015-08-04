@@ -57,5 +57,5 @@ contribute
 #. Send a pull request and bug the maintainer until it gets merged and
    published. :) Make sure to add yourself to AUTHORS_.
 
-.. _`the repository`: http://github.com/percipient/stronglib
+.. _the repository: http://github.com/percipient/stronglib
 .. _AUTHORS: https://github.com/percipient/strongarm-cli/blob/master/AUTHORS.rst
