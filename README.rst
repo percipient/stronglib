@@ -58,4 +58,4 @@ contribute
    published. :) Make sure to add yourself to AUTHORS_.
 
 .. _the repository: http://github.com/percipient/stronglib
-.. _AUTHORS: https://github.com/percipient/strongarm-cli/blob/master/AUTHORS.rst
+.. _AUTHORS: https://github.com/percipient/stronglib/blob/master/AUTHORS.rst
