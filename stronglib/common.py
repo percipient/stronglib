@@ -19,7 +19,7 @@ class StronglibUnauthorized(StronglibException):
 
 def request(method, endpoint, **kwargs):
     """
-    Wrap requests.request to help make HTTP requests to STRONGARM API.
+    Wrap requests.request to help make HTTP requests to the STRONGARM API.
 
     Add authentication to request and do error checking on response.
 
@@ -48,10 +48,10 @@ def request(method, endpoint, **kwargs):
 
 class PaginatedResourceList(object):
     """
-    A list replacement for supporting the pagination of STRONGARM API.
+    A read-only list replacement for supporting pagination of the STRONGARM API.
 
-    Given a resource endpoint URL, it fetches the first page on initialization,
-    and then lazily fetches the rest when needed.
+    Given a resource endpoint URL, get the first page on initialization and
+    then lazily get the rest when needed.
 
     Calling `len()` on the object reports the total number of elements, even if
     some of them are not yet fetched into memory.
@@ -61,25 +61,25 @@ class PaginatedResourceList(object):
 
     """
 
-    def __init__(self, contentClass, firstUrl):
-        self.__contentClass = contentClass
+    def __init__(self, content_cls, first_url):
+        self.__content_cls = content_cls
         self.__data = []
         self.__len = None
-        self.__nextUrl = firstUrl
+        self.__next_url = first_url
         self.__expand()
 
     def __can_expand(self):
         return len(self._data) < self.__len
 
     def __expand(self):
-        data = request('get', self.__nextUrl)
+        data = request('get', self.__next_url)
 
         if self.__len is None:
             self.__len = data['count']
 
-        self.__nextUrl = data.get('next')
+        self.__next_url = data.get('next')
 
-        newData = [self.__contentClass(element) for element in data['results']]
+        newData = [self.__content_cls(element) for element in data['results']]
         self.__data += newData
 
         return newData
@@ -122,8 +122,7 @@ class PaginatedResourceList(object):
 
 class Struct(object):
     """
-    A generic object that holds attributes, useful for providing dot notation
-    to dictionaries.
+    A generic object providing dot notation on dictionaries.
 
     """
 
