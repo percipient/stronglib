@@ -24,14 +24,15 @@ class PyTest(TestCommand):
 
 
 tests_require = [
-    'pytest==2.7.2',
+    'pytest>=2.6.4',
     'pytest-cov==1.8.1',
     'responses==0.4.0',
 ]
 
 
 install_requires = [
-    'requests>=2.7.0',
+    'requests==2.7.0',
+    'six==1.9.0',
 ]
 
 
@@ -64,10 +65,8 @@ setup(
         'Development Status :: 2 - Pre-Alpha',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.1',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',

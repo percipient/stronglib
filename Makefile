@@ -25,6 +25,11 @@ test: init
 	python setup.py test
 	@echo
 
+test-tox: init
+	@echo $(TAG)Running tests on all Pythons via Tox$(END)
+	tox
+	@echo
+
 test-dist: test-sdist test-bdist-wheel
 	@echo
 
