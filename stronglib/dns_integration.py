@@ -38,16 +38,15 @@ class DnsBlackholeUpdater(object):
         Given a string token of the STRONGARM API, fetch the list of blackholed
         domains and run the updater.
 
+        Return a list of domains that failed to update.
+
         """
 
         stronglib.api_key = token
 
         domains = [domain.name for domain in stronglib.Domain.all()]
 
-        failed = self.update_domains(domains)
-
-        print "Update complete. These domains failed to update:"
-        print failed
+        return self.update_domains(domains)
 
 
 class DnsBlackholeIncrementalUpdater(DnsBlackholeUpdater):
