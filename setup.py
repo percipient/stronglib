@@ -24,14 +24,14 @@ class PyTest(TestCommand):
 
 
 tests_require = [
-    'pytest==2.7.2',
+    'pytest>=2.6.4',
     'pytest-cov==1.8.1',
     'responses==0.4.0',
 ]
 
 
 install_requires = [
-    'requests>=2.7.0',
+    'requests==2.7.0',
 ]
 
 
