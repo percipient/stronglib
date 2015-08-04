@@ -69,9 +69,17 @@ class PaginatedResourceList(object):
         self.__expand()
 
     def __can_expand(self):
+        """
+        Whether or not there are additional pages of data to fetch.
+
+        """
         return len(self.__data) < self.__len
 
     def __expand(self):
+        """
+        Expand the internal list by fetching an additional page of data.
+
+        """
         data = request('get', self.__next_url)
 
         if self.__len is None:
