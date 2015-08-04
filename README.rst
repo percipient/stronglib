@@ -14,11 +14,12 @@ features
 installation
 ------------
 
-To install stronglib, simply:
+stronglib is still in beta. The **latest development version** can be
+installed directly from GitHub:
 
 .. code-block:: bash
 
-    $ pip install stronglib
+    $ pip install --upgrade https://github.com/percipient/stronglib/tarball/master
 
 usage
 -----
