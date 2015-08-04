@@ -6,7 +6,7 @@ stronglib - a Python library for the STRONGARM API
 
 __author__ = 'Percipient Networks, LLC'
 __version__ = 'dev'
-__licence__ = 'Apache 2.0'
+__license__ = 'Apache 2.0'
 
 
 host = 'https://strongarm.percipientnetworks.com'
