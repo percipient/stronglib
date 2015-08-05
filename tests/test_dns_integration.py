@@ -10,10 +10,13 @@ from strongarm.dns_integration import (DnsBlackholeIncrementalUpdater,
 class StrongarmDnsTestCase(unittest.TestCase):
 
     def test_unimplemented(self):
-        """Test that running the base class directly raises NotImplemented."""
+        """Test that running the base classes directly raises NotImplemented."""
 
         with self.assertRaises(NotImplementedError):
             DnsBlackholeUpdater('127.0.0.1').update_domains(['example.com'])
+
+        with self.assertRaises(NotImplementedError):
+            DnsBlackholeIncrementalUpdater('127.0.0.1').update_domains(['example.com'])
 
     def test_incremental_update(self):
         """

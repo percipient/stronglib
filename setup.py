@@ -12,9 +12,9 @@ class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = [
-            '--cov', './strongarm', '--cov', './tests',
+            '--cov', './strongarm',
             '--doctest-modules', '--verbose',
-            './strongarm', './tests'
+            './tests'
         ]
         self.test_suite = True
 

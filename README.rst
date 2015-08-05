@@ -5,6 +5,12 @@ stronglib is an Apache2 licensed Python library for the
 `STRONGARM <http://strongarm.io>`_
 `API <https://strongarm.percipientnetworks.com/api/>`_.
 
+.. image:: https://travis-ci.org/percipient/stronglib.svg?branch=master
+    :target: https://travis-ci.org/percipient/stronglib
+
+.. image:: https://coveralls.io/repos/percipient/stronglib/badge.svg?branch=master
+    :target: https://coveralls.io/github/percipient/stronglib
+
 features
 --------
 
