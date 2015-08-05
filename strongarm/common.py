@@ -1,3 +1,5 @@
+import json
+
 import requests
 from six import integer_types, iteritems
 from six.moves import xrange
@@ -209,3 +211,18 @@ class ListableResource(object):
     def all(cls):
         endpoint = strongarm.host + cls.endpoint
         return PaginatedResourceList(cls, endpoint)
+
+
+class CreatableResource(object):
+    """
+    A mixin for a STRONGARM resource that can be created.
+
+    The `create` method returns an instance of the newly created resource.
+
+    """
+
+    @classmethod
+    def create(cls, **kwargs):
+        endpoint = strongarm.host + cls.endpoint
+        return cls(request('post', endpoint, data=json.dumps(kwargs),
+                           headers={'Content-Type': 'application/json'}))
