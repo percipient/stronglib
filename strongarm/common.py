@@ -12,11 +12,28 @@ class StrongarmException(Exception):
     """
 
 
-class StrongarmUnauthorized(StrongarmException):
+class StrongarmHttpError(StrongarmException):
+    """
+    The STRONGARM API responded with an HTTP error code.
+
+    """
+
+    def __init__(self, status_code, detail):
+        super(StrongarmHttpError, self).__init__(status_code, detail)
+
+        self.status_code = status_code
+        self.detail = detail
+
+
+class StrongarmUnauthorized(StrongarmHttpError):
     """
     Missing or incorrect authentication credentials.
 
     """
+
+    def __init__(self, msg):
+        super(StrongarmUnauthorized, self).__init__(requests.codes.unauthorized,
+                                                    msg)
 
 
 def request(method, endpoint, **kwargs):
@@ -34,18 +51,31 @@ def request(method, endpoint, **kwargs):
 
     res = requests.request(method, endpoint, **kwargs)
 
-    # Raise StrongarmException on the error code.
-    if res.status_code == 401:
+    # Raise StrongarmUnauthorized for HTTP 401 Unauthorized.
+    if res.status_code == requests.codes.unauthorized:
         try:
-            msg = res.json()['details']
-        except KeyError:
-            msg = ''
+            msg = res.json()['detail']
+        except (ValueError, KeyError):
+            msg = res.text
         raise StrongarmUnauthorized(msg)
 
-    elif res.status_code != requests.codes.ok:
-        raise StrongarmException("Received error code %d" % res.status_code)
+    # Raise StrongarmException for HTTP error codes.
+    elif res.status_code >= 400:
+        try:
+            msg = res.json()['detail']
+        except (ValueError, KeyError):
+            msg = res.text
+        raise StrongarmHttpError(res.status_code, msg)
 
-    return res.json()
+    # If the content is empty, do not parse json and return None directly.
+    if not res.text:
+        return None
+
+    try:
+        return res.json()
+    # If the content is not json, raise StrongarmException.
+    except ValueError:
+        raise StrongarmException("Failed to parse response: %s" % res.text)
 
 
 class PaginatedResourceList(object):

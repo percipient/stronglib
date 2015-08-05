@@ -13,5 +13,6 @@ host = 'https://strongarm.percipientnetworks.com'
 api_key = None
 
 
-from strongarm.common import (StrongarmException, StrongarmUnauthorized)
+from strongarm.common import (StrongarmException, StrongarmHttpError,
+                              StrongarmUnauthorized)
 from strongarm.resources import Domain

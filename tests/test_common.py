@@ -8,21 +8,112 @@ import responses
 from six.moves.urllib.parse import parse_qs, urlparse
 
 import strongarm
-from strongarm.common import Struct, PaginatedResourceList
+from strongarm.common import request, Struct, PaginatedResourceList
 
 
-class StrongarmTestCase(unittest.TestCase):
+class RequestTestCase(unittest.TestCase):
 
-    def test_unauthorized(self):
+    # The mocked url to make test requests to.
+    url = 'http://example.com/api/domains/'
+
+    @responses.activate
+    def test_authorization(self):
         """
         Test that when it's given an invalid token, stronglib raises
         unauthorized exception when making an API request.
 
         """
 
-        with self.assertRaises(strongarm.StrongarmUnauthorized):
+        token = "this_is_a_token"
+        unauth_msg = "Get out of here!"
+        data = {'data': 'some_data'}
+
+        def authorization_required(request):
+
+            if not ('Authorization' in request.headers and
+                    request.headers['Authorization'] == 'Token %s' % token):
+                return (401, {}, json.dumps({'detail': unauth_msg}))
+
+            return (200, {}, json.dumps(data))
+
+        responses.add_callback(responses.GET, self.url,
+                               callback=authorization_required,
+                               content_type='application/json')
+
+        # If a wrong token is provided:
+        with self.assertRaises(strongarm.StrongarmUnauthorized) as exp:
             strongarm.api_key = 'bad_token'
-            strongarm.Domain.all()
+            request('get', self.url)
+        self.assertEqual(401, exp.exception.status_code)
+        self.assertEqual(unauth_msg, exp.exception.detail)
+
+        # If the correct token is provided:
+        strongarm.api_key = token
+        self.assertEqual(request('get', self.url), data)
+
+    @responses.activate
+    def test_error_code_msg(self):
+        """
+        Test that when an HTTP error code is received, StrongarmHttpError is
+        raised with the status code and the provided error message.
+
+        """
+
+        msg = "Something something does not exist."
+
+        responses.add(responses.GET, self.url, status=404,
+                      content_type='application/json',
+                      body=json.dumps({'detail': msg}))
+
+        with self.assertRaises(strongarm.StrongarmHttpError) as exp:
+            request('get', self.url)
+
+        self.assertEqual(exp.exception.status_code, 404)
+        self.assertEqual(exp.exception.detail, msg)
+
+    @responses.activate
+    def test_error_code_no_json(self):
+        """
+        Test that when an HTTP error code is received with non-json data,
+        StrongarmHttpError is raised with the status code and the raw data.
+
+        """
+
+        msg = "<h1>Bad request</h1>"
+
+        responses.add(responses.GET, self.url, status=400,
+                      content_type='text/html', body=msg)
+
+        with self.assertRaises(strongarm.StrongarmHttpError) as exp:
+            request('get', self.url)
+
+        self.assertEqual(exp.exception.status_code, 400)
+        self.assertEqual(exp.exception.detail, msg)
+
+    @responses.activate
+    def test_no_content(self):
+        """
+        Test that when the request does not have any content, None is returned.
+
+        """
+
+        responses.add(responses.GET, self.url, status=204,
+                      content_type='application/json')
+
+        self.assertIsNone(request('get', self.url))
+
+    @responses.activate
+    def test_parse_error(self):
+        """
+        Test that when the request is not json, StrongarmException is raised.
+
+        """
+
+        responses.add(responses.GET, self.url, status=200,
+                      content_type='text/html', body='text')
+
+        with self.assertRaises(strongarm.StrongarmException) as exp:
+            request('get', self.url)
 
 
 class StructTestCase(unittest.TestCase):
