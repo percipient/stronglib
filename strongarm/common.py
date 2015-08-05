@@ -226,3 +226,19 @@ class CreatableResource(object):
         endpoint = strongarm.host + cls.endpoint
         return cls(request('post', endpoint, data=json.dumps(kwargs),
                            headers={'Content-Type': 'application/json'}))
+
+
+class DeletableResource(object):
+    """
+    A mixin for a STRONGARM resource that can be deleted.
+
+    The `delete` method returns None on successful deletion.
+
+    """
+
+    # The attribute to be used as the unique identifier.
+    id_attr = 'id'
+
+    def delete(self, **kwargs):
+        endpoint = strongarm.host + self.endpoint + str(getattr(self, self.id_attr))
+        request('delete', endpoint)
