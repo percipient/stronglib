@@ -1,5 +1,5 @@
 import requests
-from six import integer_types
+from six import integer_types, iteritems
 from six.moves import xrange
 
 import strongarm
@@ -140,7 +140,7 @@ class Struct(object):
 
         self.__dict__.update(dictionary)
 
-        for k, v in self.__dict__.iteritems():
+        for k, v in iteritems(self.__dict__):
             if isinstance(v, dict):
                 self.__dict__[k] = Struct(v)
 
