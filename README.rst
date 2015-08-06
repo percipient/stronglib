@@ -37,6 +37,10 @@ usage
     # token authentication
     strongarm.api_key = 'your_api_token'
 
+    # get (ie, search) a single Domain
+    domain = strongarm.Domain.get('example.com')
+    print(domain.name)
+
     # list all blackholed domains
     for domain in strongarm.Domain.all():
         print(domain.name)
