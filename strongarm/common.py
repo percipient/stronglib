@@ -1,3 +1,5 @@
+import json
+
 import requests
 from six import integer_types, iteritems
 from six.moves import xrange
@@ -12,11 +14,28 @@ class StrongarmException(Exception):
     """
 
 
-class StrongarmUnauthorized(StrongarmException):
+class StrongarmHttpError(StrongarmException):
+    """
+    The STRONGARM API responded with an HTTP error code.
+
+    """
+
+    def __init__(self, status_code, detail):
+        super(StrongarmHttpError, self).__init__(status_code, detail)
+
+        self.status_code = status_code
+        self.detail = detail
+
+
+class StrongarmUnauthorized(StrongarmHttpError):
     """
     Missing or incorrect authentication credentials.
 
     """
+
+    def __init__(self, msg):
+        super(StrongarmUnauthorized, self).__init__(requests.codes.unauthorized,
+                                                    msg)
 
 
 def request(method, endpoint, **kwargs):
@@ -34,18 +53,31 @@ def request(method, endpoint, **kwargs):
 
     res = requests.request(method, endpoint, **kwargs)
 
-    # Raise StrongarmException on the error code.
-    if res.status_code == 401:
+    # Raise StrongarmUnauthorized for HTTP 401 Unauthorized.
+    if res.status_code == requests.codes.unauthorized:
         try:
-            msg = res.json()['details']
-        except KeyError:
-            msg = ''
+            msg = res.json()['detail']
+        except (ValueError, KeyError):
+            msg = res.text
         raise StrongarmUnauthorized(msg)
 
-    elif res.status_code != requests.codes.ok:
-        raise StrongarmException("Received error code %d" % res.status_code)
+    # Raise StrongarmException for HTTP error codes.
+    elif res.status_code >= 400:
+        try:
+            msg = res.json()['detail']
+        except (ValueError, KeyError):
+            msg = res.text
+        raise StrongarmHttpError(res.status_code, msg)
 
-    return res.json()
+    # If the content is empty, do not parse json and return None directly.
+    if not res.text:
+        return None
+
+    try:
+        return res.json()
+    # If the content is not json, raise StrongarmException.
+    except ValueError:
+        raise StrongarmException("Failed to parse response: %s" % res.text)
 
 
 class PaginatedResourceList(object):
@@ -179,3 +211,34 @@ class ListableResource(object):
     def all(cls):
         endpoint = strongarm.host + cls.endpoint
         return PaginatedResourceList(cls, endpoint)
+
+
+class CreatableResource(object):
+    """
+    A mixin for a STRONGARM resource that can be created.
+
+    The `create` method returns an instance of the newly created resource.
+
+    """
+
+    @classmethod
+    def create(cls, **kwargs):
+        endpoint = strongarm.host + cls.endpoint
+        return cls(request('post', endpoint, data=json.dumps(kwargs),
+                           headers={'Content-Type': 'application/json'}))
+
+
+class DeletableResource(object):
+    """
+    A mixin for a STRONGARM resource that can be deleted.
+
+    The `delete` method returns None on successful deletion.
+
+    """
+
+    # The attribute to be used as the unique identifier.
+    id_attr = 'id'
+
+    def delete(self, **kwargs):
+        endpoint = strongarm.host + self.endpoint + str(getattr(self, self.id_attr))
+        request('delete', endpoint)
