@@ -15,7 +15,7 @@ features
 --------
 
 - token authentication
-- get list of blackholed domains
+- get, create, and delete blackholed domains
 
 installation
 ------------
@@ -30,8 +30,6 @@ installed directly from GitHub:
 usage
 -----
 
-Currently the STRONGARM API supports listing all domains.
-
 .. code-block:: python
 
     import strongarm
@@ -42,6 +40,12 @@ Currently the STRONGARM API supports listing all domains.
     # list all blackholed domains
     for domain in strongarm.Domain.all():
         print(domain.name)
+
+    # create a new blackholed domain
+    domain = strongarm.Domain.create(name='example.com')
+
+    # delete a blackholed domain
+    domain.delete()
 
 contribute
 ----------
