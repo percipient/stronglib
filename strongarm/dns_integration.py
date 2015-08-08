@@ -44,7 +44,7 @@ class DnsBlackholeUpdater(object):
 
         strongarm.api_key = token
 
-        domains = [domain.name for domain in strongarm.Domain.all()]
+        domains = (domain.name for domain in strongarm.Domain.all())
 
         return self.update_domains(domains)
 
