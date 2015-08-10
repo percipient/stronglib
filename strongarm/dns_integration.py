@@ -44,7 +44,9 @@ class DnsBlackholeUpdater(object):
 
         strongarm.api_key = token
 
-        domains = [domain.name for domain in strongarm.Domain.all()]
+        # Use a generator expression to ensure domain pages are lazily fetched
+        # as they are being processed in `update_domains`.
+        domains = (domain.name for domain in strongarm.Domain.all())
 
         return self.update_domains(domains)
 
