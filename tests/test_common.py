@@ -52,6 +52,29 @@ class RequestTestCase(unittest.TestCase):
         self.assertEqual(request('get', self.url), data)
 
     @responses.activate
+    def test_version_header(self):
+        """
+        Test that the API version is explicitly included in the Accept header.
+
+        """
+
+        correct_header = 'application/json; version=1.0'
+
+        def assert_header(request):
+
+            self.assertIn('Accept', request.headers)
+            self.assertEqual(request.headers['Accept'], correct_header)
+
+            return (200, {}, '')
+
+        responses.add_callback(responses.GET, self.url,
+                               callback=assert_header,
+                               content_type='application/json')
+
+        # Make a random request to trigger the test in the above callback.
+        request('get', self.url)
+
+    @responses.activate
     def test_error_code_msg(self):
         """
         Test that when an HTTP error code is received, StrongarmHttpError is
