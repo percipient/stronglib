@@ -46,10 +46,14 @@ def request(method, endpoint, **kwargs):
 
     """
 
-    # Add authorization token to the request headers.
     if 'headers' not in kwargs:
         kwargs['headers'] = {}
+
+    # Add authorization token to the request headers.
     kwargs['headers']['Authorization'] = 'Token %s' % strongarm.api_key
+
+    # Explicitly specify the API version for future-proofing.
+    kwargs['headers']['Accept'] = 'application/json; version=1.0'
 
     res = requests.request(method, endpoint, **kwargs)
 
