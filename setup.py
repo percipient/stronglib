@@ -62,7 +62,7 @@ setup(
     tests_require=tests_require,
     cmdclass={'test': PyTest},
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',

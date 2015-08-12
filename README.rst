@@ -20,8 +20,15 @@ features
 installation
 ------------
 
-stronglib is still in beta. The **latest development version** can be
-installed directly from GitHub:
+*stronglib is still in beta.*
+
+The **latest release** can be installed from PyPI:
+
+.. code-block:: bash
+
+  $ pip install --upgrade stronglib
+
+The **latest development version** can be installed directly from GitHub:
 
 .. code-block:: bash
 
