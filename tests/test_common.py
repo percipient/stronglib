@@ -58,7 +58,7 @@ class RequestTestCase(unittest.TestCase):
 
         """
 
-        correct_header = 'application/json; version=1.0'
+        correct_header = 'application/json; version=%s' % strongarm.api_version
 
         def assert_header(request):
 

@@ -53,7 +53,8 @@ def request(method, endpoint, **kwargs):
     kwargs['headers']['Authorization'] = 'Token %s' % strongarm.api_key
 
     # Explicitly specify the API version for future-proofing.
-    kwargs['headers']['Accept'] = 'application/json; version=1.0'
+    kwargs['headers']['Accept'] = ('application/json; version=%s' %
+                                   strongarm.api_version)
 
     res = requests.request(method, endpoint, **kwargs)
 
