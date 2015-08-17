@@ -20,8 +20,6 @@ features
 installation
 ------------
 
-*stronglib is still in beta.*
-
 The **latest release** can be installed from PyPI:
 
 .. code-block:: bash
