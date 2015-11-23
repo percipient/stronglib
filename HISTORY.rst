@@ -3,6 +3,12 @@
 release history
 ---------------
 
+0.1.2 (2015-11-23)
+++++++++++++++++++
+
+* update API host to use https://strongarm.io
+* update API endpoints to always have a trailing slash
+
 0.1.1 (2015-08-17)
 ++++++++++++++++++
 
