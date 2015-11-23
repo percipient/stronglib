@@ -9,7 +9,7 @@ __version__ = '0.1.1'
 __license__ = 'Apache 2.0'
 
 
-host = 'https://strongarm.percipientnetworks.com'
+host = 'https://strongarm.io'
 api_key = None
 api_version = '0.1.0'  # Developers generally should not change this.
 

@@ -192,7 +192,7 @@ class StrongResource(Struct):
     Support the `get` method that takes an id and gets a single instance of the
     resource from the API.
 
-    Implementations should define a class variable `endpoint` to specifie the
+    Implementations should define a class variable `endpoint` to specify the
     API path.
 
     """
