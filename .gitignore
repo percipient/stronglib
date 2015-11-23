@@ -65,6 +65,9 @@ docs/_build
 # Ignore the .aptCache directory.
 .aptCache
 
+# Ignore the test cache directory.
+.cache
+
 # environment variables files used by honcho/foreman
 .env
 
