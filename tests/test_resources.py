@@ -80,7 +80,7 @@ class DomainTestCase(unittest.TestCase):
 
         name = self.get_response['name']
 
-        responses.add(responses.GET, strongarm.host + Domain.endpoint + name,
+        responses.add(responses.GET, strongarm.host + Domain.endpoint + name + '/',
                       body=json.dumps(self.get_response),
                       content_type='application/json/')
 
@@ -101,7 +101,7 @@ class DomainTestCase(unittest.TestCase):
         name = 'non-existent.example.com'
         msg = 'Domain does not exist.'
 
-        responses.add(responses.GET, strongarm.host + Domain.endpoint + name,
+        responses.add(responses.GET, strongarm.host + Domain.endpoint + name + '/',
                       status=404, content_type='application/json',
                       body=json.dumps({'detail': msg}))
 
@@ -143,10 +143,10 @@ class DomainTestCase(unittest.TestCase):
 
         name = self.get_response['name']
 
-        responses.add(responses.GET, strongarm.host + Domain.endpoint + name,
+        responses.add(responses.GET, strongarm.host + Domain.endpoint + name + '/',
                       body=json.dumps(self.get_response),
                       content_type='application/json/')
-        responses.add(responses.DELETE, strongarm.host + Domain.endpoint + name,
+        responses.add(responses.DELETE, strongarm.host + Domain.endpoint + name + '/',
                       status=204)
 
         # First get the domain to be deleted
@@ -169,7 +169,7 @@ class DomainTestCase(unittest.TestCase):
 
         name = 'non-existent.example.com'
 
-        responses.add(responses.DELETE, strongarm.host + Domain.endpoint + name,
+        responses.add(responses.DELETE, strongarm.host + Domain.endpoint + name + '/',
                       status=404)
 
         # Create the Domain instance manually.
