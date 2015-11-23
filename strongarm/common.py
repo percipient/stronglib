@@ -200,6 +200,8 @@ class StrongResource(Struct):
     @classmethod
     def get(cls, id):
         endpoint = strongarm.host + cls.endpoint + str(id)
+        if not endpoint.endswith('/'):
+            endpoint = endpoint + '/'
         return cls(request('get', endpoint))
 
 
@@ -246,4 +248,6 @@ class DeletableResource(object):
 
     def delete(self, **kwargs):
         endpoint = strongarm.host + self.endpoint + str(getattr(self, self.id_attr))
+        if not endpoint.endswith('/'):
+            endpoint = endpoint + '/'
         request('delete', endpoint)
