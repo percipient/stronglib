@@ -56,7 +56,7 @@ def request(method, endpoint, **kwargs):
     kwargs['headers']['Accept'] = ('application/json; version=%s' %
                                    strongarm.api_version)
 
-    res = requests.request(method, endpoint, **kwargs)
+    res = requests.request(method, endpoint, verify=False, **kwargs)
 
     # Raise StrongarmUnauthorized for HTTP 401 Unauthorized.
     if res.status_code == requests.codes.unauthorized:
@@ -100,11 +100,12 @@ class PaginatedResourceList(object):
 
     """
 
-    def __init__(self, content_cls, first_url):
+    def __init__(self, content_cls, first_url, unique_field=None):
         self.__content_cls = content_cls
         self.__data = []
         self.__len = None
         self.__next_url = first_url
+        self.__unique_field = unique_field
         self.__expand()
 
     def __can_expand(self):
@@ -126,22 +127,44 @@ class PaginatedResourceList(object):
 
         self.__next_url = data.get('next')
 
-        newData = [self.__content_cls(element) for element in data['results']]
-        self.__data += newData
+        new_data = [self.__content_cls(element) for element in data['results']]
+        self.__data += new_data
 
-        return newData
+        return new_data
 
     def __len__(self):
         return self.__len
 
     def __iter__(self):
+        # Track a set of objects based on unique attribute.
+        element_set = set()
         for element in self.__data:
-            yield element
+            # If we have a unique attribute requirement and the objects
+            # we are iterating over have that attribute, check if we have
+            # already returned an instance of object.
+            if self.__unique_field and hasattr(element, self.__unique_field):
+                unique_attr = getattr(element, self.__unique_field)
+                if unique_attr not in element_set:
+                    element_set.add(unique_attr)
+                    yield element
+
+            else:  # No unique requirement.
+                yield element
 
         while self.__can_expand():
-            newData = self.__expand()
-            for element in newData:
-                yield element
+            new_data = self.__expand()
+            for element in new_data:
+                # If we have a unique attribute requirement and the objects
+                # we are iterating over have that attribute, check if we have
+                # already returned an instance of object.
+                if self.__unique_field and hasattr(element, self.__unique_field):
+                    unique_attr = getattr(element, self.__unique_field)
+                    if unique_attr not in element_set:
+                        element_set.add(unique_attr)
+                        yield element
+
+                else:  # No unique requirement.
+                    yield element
 
     def __getitem__(self, index):
 
@@ -165,6 +188,12 @@ class PaginatedResourceList(object):
             return [self[i] for i in xrange(*index.indices(len(self)))]
 
         raise TypeError("list indices must be integers, not %s" % type(index))
+
+    def count(self):
+        """
+        Return the de-deplicated element count.
+        """
+        return len(list(self))
 
 
 class Struct(object):
@@ -217,7 +246,7 @@ class ListableResource(object):
     @classmethod
     def all(cls):
         endpoint = strongarm.host + cls.endpoint
-        return PaginatedResourceList(cls, endpoint)
+        return PaginatedResourceList(cls, endpoint, unique_field=cls.id_attr)
 
 
 class CreatableResource(object):
