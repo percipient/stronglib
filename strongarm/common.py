@@ -56,7 +56,7 @@ def request(method, endpoint, **kwargs):
     kwargs['headers']['Accept'] = ('application/json; version=%s' %
                                    strongarm.api_version)
 
-    res = requests.request(method, endpoint, verify=False, **kwargs)
+    res = requests.request(method, endpoint, **kwargs)
 
     # Raise StrongarmUnauthorized for HTTP 401 Unauthorized.
     if res.status_code == requests.codes.unauthorized:
