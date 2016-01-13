@@ -1,7 +1,6 @@
 language: python
 python:
   - "2.7"
-  - "3.2"
   - "3.3"
   - "3.4"
 script: inv test
@@ -12,5 +11,3 @@ install:
   # Coveralls 4.0 doesn't support Python 3.2
   - pip install -r requirements.txt
   - pip install python-coveralls
-  - if [ "$TRAVIS_PYTHON_VERSION" == "3.2" ]; then travis_retry pip install coverage==3.7.1; fi
-  - if [ "$TRAVIS_PYTHON_VERSION" != "3.2" ]; then travis_retry pip install coverage; fi
