@@ -305,3 +305,45 @@ class PaginationTestCase(unittest.TestCase):
         entire_list = list(self.plist)
         self.assertEqual(entire_list, list(range(self.total)))
         self.assertEqual(len(responses.calls), self.lazy_pages(self.total-1))
+
+
+class UniquePaginationTestCase(unittest.TestCase):
+
+    endpoint = 'http://example.com/integers'
+
+    # Specification of the fake paginated API endpoint.
+    total = 14
+    per_page = 4
+    pages = int(ceil(float(total) / per_page))
+
+    def setUp(self):
+        """
+        Set up fake paginated API endpoint using responses.
+
+        """
+
+        def paginated_resource(request):
+
+            params = parse_qs(urlparse(request.url).query)
+            page = int(params['page'][0]) if 'page' in params else 1
+
+            start = self.per_page * (page - 1)
+            end = min(self.per_page * page, self.total)
+            data = list({'name': 'duplicate'} for x in range(start, end))
+
+            next_url = None
+            if page < self.pages:
+                next_url = '%s?page=%d' % (self.endpoint, page + 1)
+
+            response = {'count': self.total, 'results': data, 'next': next_url}
+            return (200, {}, json.dumps(response))
+
+        responses.add_callback(responses.GET, self.endpoint,
+                               callback=paginated_resource,
+                               content_type='application/json')
+
+    @responses.activate
+    def test_deduplicate_elements(self):
+        self.plist = PaginatedResourceList(Struct, self.endpoint,
+                                           unique_field='name')
+        self.assertEqual(self.plist.count(), 1)
