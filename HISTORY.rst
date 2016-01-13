@@ -3,6 +3,12 @@
 release history
 ---------------
 
+0.1.3 (2016-1-13)
++++++++++++++++++
+
+* remove duplicate entries when listing domains
+* add a `count method` that exposes the number of unique domains
+
 0.1.2 (2015-11-23)
 ++++++++++++++++++
 
