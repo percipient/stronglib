@@ -6,7 +6,7 @@ import unittest
 import responses
 
 import strongarm
-from strongarm.resources import Domain
+from strongarm.resources import Domain, Infection
 
 
 class DomainTestCase(unittest.TestCase):
@@ -99,7 +99,7 @@ class DomainTestCase(unittest.TestCase):
         """
 
         name = 'non-existent.example.com'
-        msg = 'Domain does not exist.'
+        msg = 'The domain does not exist.'
 
         responses.add(responses.GET, strongarm.host + Domain.endpoint + name + '/',
                       status=404, content_type='application/json',
@@ -181,3 +181,142 @@ class DomainTestCase(unittest.TestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(exp.exception.status_code, 404)
+
+
+class InfectionTestCase(unittest.TestCase):
+
+    list_response = {
+        "count": 2,
+        "next": None,
+        "previous": None,
+        "results": [
+            {
+                "id": "MgEqqxrm",
+                "port": 80,
+                "victim_ip": "1.2.3.4",
+                "victim_hostname": None,
+                "dest_domain": "0.example.com",
+                "first_seen": "2016-01-15T20:42:33Z",
+                "last_seen": "2016-01-15T20:45:17Z",
+                "resolved": False,
+                "protocol": "http"
+            },
+            {
+                "id": "l3JPB8fo",
+                "port": 6667,
+                "victim_ip": "1.2.3.4",
+                "victim_hostname": None,
+                "dest_domain": None,
+                "first_seen": "2016-01-15T20:41:56Z",
+                "last_seen": "2016-01-15T20:42:19Z",
+                "resolved": False,
+                "protocol":"irc"
+            }
+        ]
+    }
+
+    get_response = {
+        "id": "MgEqqxrm",
+        "port": 80,
+        "victim_ip": "1.2.3.4",
+        "victim_hostname": None,
+        "dest_domain": "0.example.com",
+        "first_seen": "2016-01-15T20:42:33Z",
+        "last_seen": "2016-01-15T20:45:17Z",
+        "resolved": False,
+        "protocol": "http"
+    }
+
+    @responses.activate
+    def test_list(self):
+        """
+        Test that getting all infections returns a PaginatedResourceList with
+        the right elements.
+
+        """
+
+        responses.add(responses.GET, strongarm.host + Infection.endpoint,
+                      body=json.dumps(self.list_response),
+                      content_type='application/json')
+
+        infections = Infection.all()
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertEqual(len(infections), self.list_response['count'])
+        self.assertIsInstance(infections[0], Infection)
+        self.assertEqual(infections[0].id, self.list_response['results'][0]['id'])
+
+    @responses.activate
+    def test_get_exists(self):
+        """
+        Test that getting an infection returns an instance of Infection with the
+        right attributes.
+
+        """
+
+        id = self.get_response['id']
+
+        responses.add(responses.GET, strongarm.host + Infection.endpoint + id + '/',
+                      body=json.dumps(self.get_response),
+                      content_type='application/json/')
+
+        infection = Infection.get(id)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertIsInstance(infection, Infection)
+        self.assertEqual(infection.id, id)
+
+    @responses.activate
+    def test_get_not_found(self):
+        """
+        Test that getting a non-existent infection raises a StrongarmHttpError.
+
+        """
+
+        id = 'does-not-exist'
+        msg = 'Not found.'
+
+        responses.add(responses.GET, strongarm.host + Infection.endpoint + id + '/',
+                      status=404, content_type='application/json',
+                      body=json.dumps({'detail': msg}))
+
+        with self.assertRaises(strongarm.StrongarmHttpError) as exp:
+            Infection.get(id)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertEqual(exp.exception.status_code, 404)
+        self.assertEqual(exp.exception.detail, msg)
+
+    @responses.activate
+    def test_create(self):
+        """
+        Test that Infection does not have a create attribute.
+
+        """
+
+        self.assertFalse(hasattr(Infection, 'create'))
+
+    @responses.activate
+    def test_delete_success(self):
+        """
+        Test that an Infection instance does not have a delete attribute.
+
+        """
+        id = self.get_response['id']
+
+        responses.add(responses.GET, strongarm.host + Infection.endpoint + id + '/',
+                      body=json.dumps(self.get_response),
+                      content_type='application/json/')
+
+        # Get the infection to be 'deleted'.
+        infection = Infection.get(id)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertIsInstance(infection, Infection)
+
+        # Deletion is not possible.
+        self.assertFalse(hasattr(infection, 'delete'))
