@@ -13,6 +13,9 @@ host = 'https://strongarm.io'
 api_key = None
 api_version = '0.1.0'  # Developers generally should not change this.
 
+# This should never be set to True in a production environment and exists purely
+# for testing.
+_ignore_certificates = False
 
 from strongarm.common import (StrongarmException, StrongarmHttpError,
                               StrongarmUnauthorized)
