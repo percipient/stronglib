@@ -56,6 +56,11 @@ def request(method, endpoint, **kwargs):
     kwargs['headers']['Accept'] = ('application/json; version=%s' %
                                    strongarm.api_version)
 
+    # This should only be used for development, never in a production
+    # environment.
+    if strongarm._ignore_certificates is True:
+       kwargs['verify'] = False
+
     res = requests.request(method, endpoint, **kwargs)
 
     # Raise StrongarmUnauthorized for HTTP 401 Unauthorized.
