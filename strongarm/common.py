@@ -247,6 +247,7 @@ class ListableResource(object):
     contains all instances of the requested resource.
 
     """
+    id_attr = None
 
     @classmethod
     def all(cls):
