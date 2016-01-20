@@ -20,7 +20,7 @@ features
 installation
 ------------
 
-The **latest release** can be installed from PyPI:
+The **latest release** can be installed from `PyPI <https://pypi.python.org/pypi/stronglib>`_:
 
 .. code-block:: bash
 
