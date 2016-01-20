@@ -7,3 +7,7 @@ class Domain(StrongResource, CreatableResource, DeletableResource, ListableResou
 
     # The domain name is used as the unique identifier passed in the url.
     id_attr = 'name'
+
+
+class Infection(StrongResource, ListableResource):
+    endpoint = '/api/infections/'

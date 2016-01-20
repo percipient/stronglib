@@ -19,4 +19,4 @@ _ignore_certificates = False
 
 from strongarm.common import (StrongarmException, StrongarmHttpError,
                               StrongarmUnauthorized)
-from strongarm.resources import Domain
+from strongarm.resources import Domain, Infection
