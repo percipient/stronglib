@@ -35,7 +35,7 @@ class DnsBlackholeUpdater(object):
 
     def run(self, token):
         """
-        Given a string token of the STRONGARM API, fetch the list of blackholed
+        Given a string token for the API, fetch the list of blackholed
         domains and run the updater.
 
         Return a list of domains that failed to update.

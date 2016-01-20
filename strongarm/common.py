@@ -16,7 +16,7 @@ class StrongarmException(Exception):
 
 class StrongarmHttpError(StrongarmException):
     """
-    The STRONGARM API responded with an HTTP error code.
+    The strongarm.io API responded with an HTTP error code.
 
     """
 
@@ -40,7 +40,7 @@ class StrongarmUnauthorized(StrongarmHttpError):
 
 def request(method, endpoint, **kwargs):
     """
-    Wrap requests.request to help make HTTP requests to the STRONGARM API.
+    Wrap requests.request to help make HTTP requests to the API.
 
     Add authentication to request and do error checking on response.
 
@@ -92,7 +92,7 @@ def request(method, endpoint, **kwargs):
 
 class PaginatedResourceList(object):
     """
-    A read-only list replacement for supporting pagination of the STRONGARM API.
+    A read-only list replacement for supporting pagination of the strongarm.io API.
 
     Given a resource endpoint URL, get the first page on initialization and
     then lazily get the rest when needed.
@@ -221,7 +221,7 @@ class Struct(object):
 
 class StrongResource(Struct):
     """
-    The abstract base class for a piece of STRONGARM resource.
+    The abstract base class for a piece of a resource.
 
     Support the `get` method that takes an id and gets a single instance of the
     resource from the API.
@@ -241,7 +241,7 @@ class StrongResource(Struct):
 
 class ListableResource(object):
     """
-    A mixin for a STRONGARM resource that can be listed.
+    A mixin for a resource that can be listed.
 
     The `all` method returns an instance of PaginatedResourceList that lazily
     contains all instances of the requested resource.
@@ -257,7 +257,7 @@ class ListableResource(object):
 
 class CreatableResource(object):
     """
-    A mixin for a STRONGARM resource that can be created.
+    A mixin for a resource that can be created.
 
     The `create` method returns an instance of the newly created resource.
 
@@ -272,7 +272,7 @@ class CreatableResource(object):
 
 class DeletableResource(object):
     """
-    A mixin for a STRONGARM resource that can be deleted.
+    A mixin for a resource that can be deleted.
 
     The `delete` method returns None on successful deletion.
 

@@ -1,5 +1,5 @@
 """
-stronglib - a Python library for the STRONGARM API
+stronglib - a Python library for the strongarm.io API
 
 """
 
