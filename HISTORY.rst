@@ -2,6 +2,10 @@
 
 release history
 ---------------
+0.1.4 (2016-1-20)
++++++++++++++++++
+
+* add support for Infection endpoint
 
 0.1.3 (2016-1-13)
 +++++++++++++++++
