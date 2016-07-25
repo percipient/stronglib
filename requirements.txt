@@ -7,4 +7,4 @@
 tox==2.3.1
 
 # Include invoke in dev.
-invoke==0.12.2
+invoke==0.13.0
