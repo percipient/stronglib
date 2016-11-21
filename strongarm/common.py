@@ -143,21 +143,10 @@ class PaginatedResourceList(object):
     def __iter__(self):
         # Track a set of objects based on unique attribute.
         element_set = set()
-        for element in self.__data:
-            # If we have a unique attribute requirement and the objects
-            # we are iterating over have that attribute, check if we have
-            # already returned an instance of object.
-            if self.__unique_field and hasattr(element, self.__unique_field):
-                unique_attr = getattr(element, self.__unique_field)
-                if unique_attr not in element_set:
-                    element_set.add(unique_attr)
-                    yield element
 
-            else:  # No unique requirement.
-                yield element
-
-        while self.__can_expand():
-            new_data = self.__expand()
+        # Ensure we do at least one iteration.
+        new_data = self.__data
+        while new_data:
             for element in new_data:
                 # If we have a unique attribute requirement and the objects
                 # we are iterating over have that attribute, check if we have
@@ -170,6 +159,11 @@ class PaginatedResourceList(object):
 
                 else:  # No unique requirement.
                     yield element
+
+            # Continue iterating if there's more data.
+            new_data = None
+            if self.__can_expand():
+                new_data = self.__expand()
 
     def __getitem__(self, index):
 
