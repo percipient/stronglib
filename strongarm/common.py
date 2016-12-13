@@ -75,7 +75,7 @@ def request(method, endpoint, **kwargs):
     elif res.status_code >= 400:
         try:
             msg = res.json()['detail']
-        except (ValueError, KeyError):
+        except (ValueError, KeyError, TypeError):
             msg = res.text
         raise StrongarmHttpError(res.status_code, msg)
 

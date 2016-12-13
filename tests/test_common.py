@@ -114,6 +114,26 @@ class RequestTestCase(unittest.TestCase):
         self.assertEqual(exp.exception.detail, msg)
 
     @responses.activate
+    def test_error_code_wrong_json(self):
+        """
+        Test that when an HTTP error code is received with non-json data as json,
+        StrongarmHttpError is raised with the status code and the raw data.
+
+        """
+
+        msg = "Bad request"
+
+        responses.add(responses.GET, self.url, status=400,
+                      content_type='application/json', json=msg)
+
+        with self.assertRaises(strongarm.StrongarmHttpError) as exp:
+            request('get', self.url)
+
+        self.assertEqual(exp.exception.status_code, 400)
+        self.assertEqual(exp.exception.detail, json.dumps(msg))
+
+
+    @responses.activate
     def test_no_content(self):
         """
         Test that when the request does not have any content, None is returned.
