@@ -2,6 +2,13 @@
 
 release history
 ---------------
+
+next
+++++
+
+* Fixed an exception when invalid JSON is returned from the Strongarm API. See
+  #32. Thanks to @kovacsbalu for reporting and fixing the issue.
+
 0.1.5 (2016-6-22)
 +++++++++++++++++
 
