@@ -56,6 +56,10 @@ def request(method, endpoint, **kwargs):
     kwargs['headers']['Accept'] = ('application/json; version=%s' %
                                    strongarm.api_version)
 
+    # Don't allow requests to follow redirects, it is generally bad practice to
+    # allow an API library to follow any redirects.
+    kwargs['allow_redirects'] = False
+
     # This should only be used for development, never in a production
     # environment.
     if strongarm._ignore_certificates is True:
