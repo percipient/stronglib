@@ -3,11 +3,12 @@
 release history
 ---------------
 
-next
-++++
+0.2 (2018-06-29)
+++++++++++++++++
 
 * Fixed an exception when invalid JSON is returned from the Strongarm API. See
   #32. Thanks to @kovacsbalu for reporting and fixing the issue.
+* Update the default API host to point to DNSWatch.
 
 0.1.5 (2016-6-22)
 +++++++++++++++++
