@@ -9,7 +9,7 @@ __version__ = '0.1.5'
 __license__ = 'Apache 2.0'
 
 
-host = 'https://app.strongarm.io'
+host = 'https://dnswatch.watchguard.com'
 api_key = None
 api_version = '0.1.0'  # Developers generally should not change this.
 
