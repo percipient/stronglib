@@ -8,6 +8,12 @@ next
 
 * Drop support for Python 3.3, which is end of life.
 * Officially support Python 3.6 and 3.7.
+* Switch to the next version of the Strongarm API. This allows access to
+  blacklisted, whitelisted, and content filtered domains.
+    * A new filter() method is added to the Domain resource.
+    * The status (blacklisted, whitelisted, or filtered) of a domain is returned.
+    * The domain description can be added and viewed.
+    * The classification of infections is returned.
 
 0.2.0 (2018-06-29)
 ++++++++++++++++++
