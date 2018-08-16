@@ -2,8 +2,12 @@
 # for installing the package and running unit tests are defined in setup.py.
 -e .
 
-# Include tox here instead of in setup.py because it is not _required_ for
-# running unit tests but helps standardizing testing during development.
+# Running tests.
+pytest
+pytest-cov
+responses
+
+# Running tests in multiple environments.
 tox==3.2.0
 
 # Include invoke in dev.
