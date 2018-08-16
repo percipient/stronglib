@@ -109,12 +109,11 @@ class PaginatedResourceList(object):
 
     """
 
-    def __init__(self, content_cls, first_url, params=None, unique_field=None):
+    def __init__(self, content_cls, first_url, params=None):
         self.__content_cls = content_cls
         self.__data = []
         self.__len = None
         self.__next_url = first_url
-        self.__unique_field = unique_field
         # The first time we expand we can pass in additional parameters (e.g.
         # for filtering).
         self.__expand(params=params)
@@ -147,29 +146,13 @@ class PaginatedResourceList(object):
         return self.__len
 
     def __iter__(self):
-        # Track a set of objects based on unique attribute.
-        element_set = set()
+        for element in self.__data:
+            yield element
 
-        # Ensure we do at least one iteration.
-        new_data = self.__data
-        while new_data:
+        while self.__can_expand():
+            new_data = self.__expand()
             for element in new_data:
-                # If we have a unique attribute requirement and the objects
-                # we are iterating over have that attribute, check if we have
-                # already returned an instance of object.
-                if self.__unique_field and hasattr(element, self.__unique_field):
-                    unique_attr = getattr(element, self.__unique_field)
-                    if unique_attr not in element_set:
-                        element_set.add(unique_attr)
-                        yield element
-
-                else:  # No unique requirement.
-                    yield element
-
-            # Continue iterating if there's more data.
-            new_data = None
-            if self.__can_expand():
-                new_data = self.__expand()
+                yield element
 
     def __getitem__(self, index):
 
@@ -194,11 +177,8 @@ class PaginatedResourceList(object):
 
         raise TypeError("list indices must be integers, not %s" % type(index))
 
-    def count(self):
-        """
-        Return the de-deplicated element count.
-        """
-        return len(list(self))
+    def count():
+        return self.__len
 
 
 class Struct(object):
@@ -252,7 +232,7 @@ class ListableResource(object):
     @classmethod
     def all(cls):
         endpoint = strongarm.host + cls.endpoint
-        return PaginatedResourceList(cls, endpoint, unique_field=cls.id_attr)
+        return PaginatedResourceList(cls, endpoint)
 
 
 class FilterableResource(ListableResource):
@@ -269,7 +249,7 @@ class FilterableResource(ListableResource):
             raise ValueError('Unknown filters added: {}'.format(', '.join(unknown_filters)))
 
         endpoint = strongarm.host + cls.endpoint
-        return PaginatedResourceList(cls, endpoint, params=kwargs, unique_field=cls.id_attr)
+        return PaginatedResourceList(cls, endpoint, params=kwargs)
 
 
 class CreatableResource(object):
