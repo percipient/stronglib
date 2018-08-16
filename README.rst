@@ -56,6 +56,21 @@ usage
     # delete a blackholed domain
     domain.delete()
 
+development
+-----------
+
+In order to develop stronglib you must install the requirements files.
+
+.. code-block:: bash
+
+    pip install -r requirements.txt
+
+Use pytest to run the test suite:
+
+.. code-block:: bash
+
+    py.test
+
 contribute
 ----------
 

@@ -38,7 +38,7 @@ def uninstall_all(ctx):
 @task
 def test(ctx):
     """Run stronglib unittests."""
-    run('python setup.py test')
+    run('py.test')
 
 
 @task
