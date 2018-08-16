@@ -109,13 +109,15 @@ class PaginatedResourceList(object):
 
     """
 
-    def __init__(self, content_cls, first_url, unique_field=None):
+    def __init__(self, content_cls, first_url, params=None, unique_field=None):
         self.__content_cls = content_cls
         self.__data = []
         self.__len = None
         self.__next_url = first_url
         self.__unique_field = unique_field
-        self.__expand()
+        # The first time we expand we can pass in additional parameters (e.g.
+        # for filtering).
+        self.__expand(params=params)
 
     def __can_expand(self):
         """
@@ -124,12 +126,12 @@ class PaginatedResourceList(object):
         """
         return len(self.__data) < self.__len
 
-    def __expand(self):
+    def __expand(self, **kwargs):
         """
         Expand the internal list by fetching an additional page of data.
 
         """
-        data = request('get', self.__next_url)
+        data = request('get', self.__next_url, **kwargs)
 
         if self.__len is None:
             self.__len = data['count']
@@ -251,6 +253,23 @@ class ListableResource(object):
     def all(cls):
         endpoint = strongarm.host + cls.endpoint
         return PaginatedResourceList(cls, endpoint, unique_field=cls.id_attr)
+
+
+class FilterableResource(ListableResource):
+    """
+    A mixin for a resource that can be filtered when being listed.
+    """
+    filterable_attrs = None
+
+    @classmethod
+    def filter(cls, **kwargs):
+        # Ensure each filter request is valid.
+        unknown_filters = set(kwargs.keys()) - set(cls.filterable_attrs)
+        if unknown_filters:
+            raise ValueError('Unknown filters added: {}'.format(', '.join(unknown_filters)))
+
+        endpoint = strongarm.host + cls.endpoint
+        return PaginatedResourceList(cls, endpoint, params=kwargs, unique_field=cls.id_attr)
 
 
 class CreatableResource(object):
