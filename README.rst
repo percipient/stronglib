@@ -51,7 +51,8 @@ usage
         print(domain.name)
 
     # list just blacklisted domains
-    for domain in strongarm.Domain.filter(statuses=strongarm.Domain.BLACKLISTED)
+    for domain in strongarm.Domain.filter(statuses=strongarm.Domain.BLACKLISTED):
+        print(domain.name)
 
     # create a new blackholed domain
     domain = strongarm.Domain.create(name='example.com')
