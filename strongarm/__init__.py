@@ -5,7 +5,7 @@ stronglib - a Python library for the strongarm.io API
 
 
 __author__ = 'Percipient Networks, LLC'
-__version__ = '0.2.1pre'
+__version__ = '0.3.0'
 __license__ = 'Apache 2.0'
 
 

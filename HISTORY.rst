@@ -3,8 +3,8 @@
 release history
 ---------------
 
-next
-++++
+0.3.0 (2018-08-17)
+++++++++++++++++++
 
 * Drop support for Python 3.3, which is end of life.
 * Officially support Python 3.6 and 3.7.
