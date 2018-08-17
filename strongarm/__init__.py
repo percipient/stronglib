@@ -11,7 +11,7 @@ __license__ = 'Apache 2.0'
 
 host = 'https://dnswatch.watchguard.com'
 api_key = None
-api_version = '0.1.0'  # Developers generally should not change this.
+api_version = '0.2.0'  # Developers generally should not change this.
 
 # This should never be set to True in a production environment and exists purely
 # for testing.
