@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 
 install_requires = [
-    'requests==2.19.1',
+    'requests==2.21.0',
     'six==1.11.0',
 ]
 
