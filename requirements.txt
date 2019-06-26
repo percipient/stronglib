@@ -8,7 +8,7 @@ pytest-cov
 responses
 
 # Running tests in multiple environments.
-tox==3.13.0
+tox==3.13.1
 
 # Include invoke in dev.
 invoke==0.22.0
