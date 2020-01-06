@@ -1,3 +1,5 @@
+STOP! The Strongarm APIs that stronglib depends on have reached their end of life and are no longer available. This code is kept only as a reference.
+
 stronglib
 =========
 
